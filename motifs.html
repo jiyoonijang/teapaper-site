@@ -1,0 +1,406 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title>티종이 그래픽 모티프</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+/* Layout: 모티프마다 한 덩어리 — 위에 관찰 한 줄, 왼쪽 기본 도형과 조절선, 오른쪽 변형 8칸, 아래 패턴 한 장.
+   움직임 실험 사이트와 같은 검은 바탕·얇은 흰 선·고운돋움. ‘검은 선’을 고르면 흰 바탕으로 뒤집힌다(사용자 선택). */
+:root{
+  --bg:#050505;
+  --fg:#ECECE6;
+  --muted:#8A8A84;
+  --dim:#55554F;
+  --line:rgba(236,236,230,.14);
+  --f:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:dark;
+}
+body.light{--bg:#F3F3EF;--fg:#151513;--muted:#6B6B65;--dim:#A2A29C;--line:rgba(21,21,19,.14);color-scheme:light}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  padding-left:max(28px,env(safe-area-inset-left,0px));padding-right:max(28px,env(safe-area-inset-right,0px));padding-block:24px 72px;transition:background .3s,color .3s}
+.wrap{max-width:1320px;margin:0 auto}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.brand{color:var(--muted);font-size:13px}
+h1{font-weight:400;font-size:clamp(26px,3.4vw,40px);line-height:1.2;margin:10px 0 10px;text-wrap:balance}
+.lead{color:var(--muted);font-size:13.5px;max-width:42em;margin:0}
+.words{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center}
+.right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+nav.words{margin-top:22px}
+
+.w{position:relative;font:inherit;color:var(--muted);background:none;border:0;padding:3px 1px;margin:0;cursor:pointer;line-height:1.4;white-space:nowrap}
+.w:hover{color:var(--fg)}
+.w .scr{position:absolute;left:-13px;top:-7px;width:calc(100% + 26px);height:calc(100% + 14px);overflow:visible;pointer-events:none}
+.w .scr path{fill:none;stroke:var(--fg);stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .7s cubic-bezier(.3,.7,.2,1)}
+.w[aria-pressed="true"],.w[aria-checked="true"]{color:var(--fg)}
+.w[aria-pressed="true"] .scr path,.w[aria-checked="true"] .scr path{stroke-dashoffset:0}
+
+.mt{display:grid;gap:20px;padding-top:44px;margin-top:44px;border-top:1px solid var(--line);scroll-margin-top:16px}
+.mt-head{display:grid;gap:4px}
+.mt h2{font-weight:400;font-size:22px;margin:0}
+.obs{color:var(--muted);font-size:13px;max-width:46em;margin:0}
+.step{font-size:12px;color:var(--dim);margin:0 0 8px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:28px;align-items:start}
+@media (max-width:920px){.row{grid-template-columns:minmax(0,1fr)}}
+.cell{position:relative;display:block;width:100%;padding:0;margin:0;background:none;border:1px solid var(--line);color:inherit;cursor:pointer;font:inherit;transition:border-color .2s}
+.cell:hover{border-color:var(--muted)}
+.cell[aria-pressed="true"]{border-color:var(--fg)}
+.cell svg{display:block;width:100%;height:auto}
+.cap{position:absolute;left:6px;bottom:5px;font-size:11px;color:var(--muted);pointer-events:none;background:var(--bg);padding:0 4px;line-height:1.5}
+.base-box{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.base-box .cell{max-width:440px}
+.vars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.vars{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ctrls{display:flex;flex-wrap:wrap;gap:16px 30px}
+.sl{display:grid;grid-template-columns:30px 120px;column-gap:10px;row-gap:2px;align-items:center;cursor:pointer}
+.sl .gl{width:30px;height:16px;overflow:visible}
+.sl .gl path,.sl .tr path{fill:none;stroke:var(--fg);stroke-width:1;vector-effect:non-scaling-stroke;stroke-linecap:round}
+.sl .tr{position:relative;display:block;width:120px;height:22px}
+.sl .tr svg{width:120px;height:22px;overflow:visible;display:block}
+.sl .tr .ln{stroke:var(--muted)}
+.sl input{position:absolute;inset:-6px 0;width:100%;height:calc(100% + 12px);margin:0;opacity:0;cursor:pointer}
+.sl .lb{grid-column:2;font-size:12px;color:var(--dim)}
+.sl:hover .lb,.sl:focus-within .lb{color:var(--muted)}
+.sl:focus-within .tr svg{outline:1px dashed var(--muted);outline-offset:5px}
+.act{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;font-size:13px;color:var(--muted)}
+.act .sel{color:var(--fg)}
+.dl{display:none}
+body.can-dl .dl{display:inline-block}
+:focus-visible{outline:1px dashed var(--fg);outline-offset:4px}
+
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 26px);transform:translateX(-50%);z-index:40;background:var(--fg);color:var(--bg);font-size:13px;padding:7px 14px;border-radius:999px;opacity:0;transition:opacity .3s;pointer-events:none;max-width:calc(100% - 40px);text-align:center}
+.toast.on{opacity:1}
+.codebox{position:fixed;inset:auto max(28px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 24px) max(28px,env(safe-area-inset-left,0px));z-index:41;background:var(--bg);border:1px solid var(--fg);padding:14px;display:grid;gap:10px;max-width:720px;margin:0 auto}
+.codebox textarea{width:100%;height:140px;background:transparent;color:var(--fg);border:1px solid var(--line);font:12px/1.5 ui-monospace,Menlo,monospace;padding:8px;resize:vertical}
+.codebox .bar{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted)}
+
+.cur{position:fixed;left:0;top:0;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:rgba(236,236,230,.16);border:1px solid rgba(236,236,230,.6);
+  pointer-events:none;z-index:50;opacity:0;transition:width .2s,height .2s,margin .2s,background .2s,opacity .4s}
+body.light .cur{background:rgba(21,21,19,.12);border-color:rgba(21,21,19,.55)}
+.cur.on{opacity:1}
+.cur.hot{width:40px;height:40px;margin:-20px 0 0 -20px;background:rgba(236,236,230,.08)}
+.cur.down{width:16px;height:16px;margin:-8px 0 0 -8px;background:rgba(236,236,230,.45)}
+.ripple{position:fixed;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;border:1px solid rgba(236,236,230,.75);pointer-events:none;z-index:50;animation:rip .45s ease-out forwards}
+body.light .ripple{border-color:rgba(21,21,19,.6)}
+@keyframes rip{to{transform:scale(2.6);opacity:0}}
+@media (hover:hover) and (pointer:fine){html.cursor-on,html.cursor-on *{cursor:none!important}}
+@media (prefers-reduced-motion:reduce){body,.cell,.toast{transition:none}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="brand">티종이 · 그래픽 모티프 · <a href="index.html" style="color:inherit;text-underline-offset:3px">움직임 실험 보기</a></div>
+      <h1>움직임에서 뽑은 평면 모티프</h1>
+      <p class="lead">관찰 → 기본 도형 → 변형 → 패턴 순서로 정리했습니다. 그래픽을 눌러 고른 뒤 SVG로 복사하면 피그마나 일러스트레이터에 바로 붙여 넣을 수 있습니다.</p>
+    </div>
+    <div class="right">
+      <div class="words" role="radiogroup" aria-label="선 색">
+        <button class="w" type="button" role="radio" data-tone="dark" aria-checked="true">흰 선</button>
+        <button class="w" type="button" role="radio" data-tone="light" aria-checked="false">검은 선</button>
+      </div>
+      <div class="words"><button class="w" type="button" id="reseed">다시 섞기</button></div>
+    </div>
+  </header>
+  <nav class="words" id="nav" aria-label="모티프로 이동"></nav>
+  <main id="main"></main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="codebox" id="codebox" hidden>
+  <div class="bar"><span>자동 복사가 막혀 있어요. 아래 코드를 전부 선택해 복사해 주세요.</span><button class="w" type="button" id="codebox-close">닫기</button></div>
+  <textarea id="codebox-text" readonly aria-label="SVG 코드"></textarea>
+</div>
+<div class="cur" id="cursor" aria-hidden="true"></div>
+
+<script>
+(function(){
+"use strict";
+const REDUCED=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const TAU=Math.PI*2;
+const $=id=>document.getElementById(id);
+let TONE="dark";
+const ink=()=>TONE==="dark"?"#ECECE6":"#151513";
+const f1=n=>Math.round(n*10)/10;
+function rng(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const rand=(a,b)=>a+Math.random()*(b-a);
+function wrap(w,h,inner){return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+" "+h+'" width="'+w+'" height="'+h+'">'+inner+"</svg>";}
+function circ(cx,cy,r){return "M"+f1(cx+r)+" "+f1(cy)+"A"+f1(r)+" "+f1(r)+" 0 1 0 "+f1(cx-r)+" "+f1(cy)+"A"+f1(r)+" "+f1(r)+" 0 1 0 "+f1(cx+r)+" "+f1(cy)+"Z";}
+function poly(P){return "M"+P.map(q=>f1(q[0])+" "+f1(q[1])).join("L");}
+function arc(cx,cy,r,a0,a1,n){const o=[];for(let i=0;i<=n;i++){const a=a0+(a1-a0)*i/n;o.push([cx+Math.cos(a)*r,cy+Math.sin(a)*r]);}return o;}
+
+/* ---------- 1. 풀리는 가장자리 ---------- */
+function gEdge(t,p,C,seed){
+  const R=rng(seed),x0=40,x1=160,y0=24,yB=184,N=72,ph=[R()*TAU,R()*TAU];
+  const jit=[];for(let i=0;i<=N;i++)jit.push(R()-.5);
+  const F=[];
+  for(let i=0;i<=N;i++){
+    const u=i/N,x=x0+(x1-x0)*u,prof=.72+.16*Math.sin(u*3.1+ph[0])+.12*Math.sin(u*7.7+ph[1]),corner=1-Math.pow(Math.min(u,1-u)*2,.4);
+    let y=yB-t*150*prof-t*34*corner+jit[i]*p.rough*14*Math.min(1,t*5);
+    F.push([x,Math.max(y0+3,Math.min(yB,y))]);
+  }
+  const d="M"+f1(F[0][0])+" "+f1(F[0][1])+"L"+x0+" "+y0+"L"+x1+" "+y0+"L"+F.slice().reverse().map(q=>f1(q[0])+" "+f1(q[1])).join("L")+"Z";
+  let fib="";const nf=Math.round(p.fluff*46*Math.min(1,t*4));
+  for(let k=0;k<nf;k++){
+    const q=F[Math.floor(R()*(N+1))],L=3+R()*10,a=Math.PI/2+(R()-.5)*1.4;
+    fib+='<path d="M'+f1(q[0])+" "+f1(q[1])+"Q"+f1(q[0]+(R()-.5)*6)+" "+f1(q[1]+L*.5)+" "+f1(q[0]+Math.cos(a)*L)+" "+f1(q[1]+Math.sin(a)*L)+'"/>';
+  }
+  let dots="";const nd=Math.round(p.fluff*170*t);
+  for(let k=0;k<nd;k++){
+    const q=F[Math.floor(R()*(N+1))],depth=Math.pow(R(),1.6)*(14+t*46),sx=(R()-.5)*(6+depth*.9),r=.7+R()*1.2+depth*.05,op=Math.max(.15,.85-depth/(20+t*60));
+    dots+='<circle cx="'+f1(q[0]+sx)+'" cy="'+f1(Math.min(236,q[1]+3+depth))+'" r="'+f1(r)+'" fill-opacity="'+op.toFixed(2)+'"/>';
+  }
+  return '<g fill="none" stroke="'+C+'" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"><path d="'+d+'"/>'+fib+'</g><g fill="'+C+'">'+dots+"</g>";
+}
+function gEdgePattern(p,C,seed){
+  let o="";
+  for(let i=0;i<8;i++){
+    o+='<g transform="translate('+i*200+' 0)">'+gEdge(i/7*.9,p,C,seed+i)+"</g>";
+    o+='<g transform="translate('+i*200+' 240) rotate(180 100 120)">'+gEdge((7-i)/7*.9,p,C,seed+20+i)+"</g>";
+  }
+  return wrap(1600,480,o);
+}
+
+/* ---------- 2. 겹치는 동심원 ---------- */
+function ringStyle(k,s){return k<.4?{mode:"line",w:.6+k/.4*4}:{mode:"face",w:s*(.25+(k-.4)/.6*.7)};}
+function gRings(centers,p,C,st,maxR){
+  const s=p.gap,n=Math.max(1,Math.ceil((maxR||p.count*s)/s));
+  if(st.mode==="line"){
+    let o="";centers.forEach(c=>{for(let k=1;k<=n;k++)o+='<circle cx="'+f1(c[0])+'" cy="'+f1(c[1])+'" r="'+f1(k*s)+'"/>';});
+    return '<g fill="none" stroke="'+C+'" stroke-width="'+f1(st.w)+'">'+o+"</g>";
+  }
+  let d="";const h=Math.min(st.w,s*.98)/2;
+  centers.forEach(c=>{for(let k=1;k<=n;k++){const r=k*s;d+=circ(c[0],c[1],r+h)+circ(c[0],c[1],Math.max(.1,r-h));}});
+  return '<path fill="'+C+'" fill-rule="evenodd" d="'+d+'"/>';
+}
+function gRingsModule(k,p,C){const st=ringStyle(k,p.gap);return wrap(240,240,gRings([[120-p.dist/2,120],[120+p.dist/2,120]],p,C,st));}
+function gRingsPattern(p,C){
+  const st=ringStyle(p.k,p.gap),cs=[];
+  for(let i=0;i<8;i++)cs.push([100+i*200,i%2?330:150]);
+  return wrap(1600,480,gRings(cs,p,C,st,Math.max(p.count*p.gap,260)));
+}
+
+/* ---------- 3. 점선과 반원 홈 ---------- */
+function gPerf(tau,p,C,seed){
+  const X0=40,X1=200,Y0=30,Y1=210,xp=X0+(X1-X0)*.42,rn=p.notch,sp=p.space,amp=sp*.22,yA=Y0+rn,yZ=Y1-rn,R=rng(seed);
+  const full=tau>=.999,yt=yA+(yZ-yA)*Math.min(1,tau);
+  const edge=(side,ya,yb)=>{const o=[];for(let y=ya;y<=yb+.01;y+=sp/10){const c=Math.cos(TAU*(y-yA)/sp);o.push([xp+side*(sp*.12-amp*c)+(R()-.5)*.7,y]);}return o;};
+  const L=[].concat(arc(xp,Y1,rn,-Math.PI/2,-Math.PI,8),[[X0,Y1],[X0,Y0]],arc(xp,Y0,rn,Math.PI,Math.PI/2,8),tau>0?edge(-1,yA,yt):[]);
+  const Rp=[].concat(tau>0?edge(1,yA,yt).reverse():[],arc(xp,Y0,rn,Math.PI/2,0,8),[[X1,Y0],[X1,Y1]],arc(xp,Y1,rn,0,-Math.PI/2,8));
+  const gap=4+20*tau,ang=full?.07:0;
+  const D=q=>{
+    let x=q[0],y=q[1];
+    if(tau>0){const k=y<yt?Math.pow((yt-y)/Math.max(1,yt-Y0),1.25):0,fall=1-.55*(x-xp)/(X1-xp);x+=gap*k*fall+(full?8:0);y+=-gap*.12*k*fall;}
+    if(ang){const cx=xp+8,cy=Y1,dx=x-cx,dy=y-cy;x=cx+dx*Math.cos(ang)-dy*Math.sin(ang);y=cy+dx*Math.sin(ang)+dy*Math.cos(ang);}
+    return [x,y];
+  };
+  let o='<g fill="none" stroke="'+C+'" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"><path d="'+poly(L)+(full?"Z":"")+'"/><path d="'+poly(Rp.map(D))+(full?"Z":"")+'"/></g>';
+  if(!full){
+    const ys=yA+sp/2+Math.max(0,Math.ceil((yt-yA-sp/2)/sp))*sp;
+    if(ys<yZ)o+='<line x1="'+f1(xp)+'" y1="'+f1(ys)+'" x2="'+f1(xp)+'" y2="'+f1(yZ)+'" stroke="'+C+'" stroke-width="'+f1(sp*.42)+'" stroke-linecap="round" stroke-dasharray="0 '+f1(sp)+'"/>';
+  }
+  return o;
+}
+function serr(x0,y0,x1,y1,side,sp,R){
+  const len=Math.hypot(x1-x0,y1-y0),ux=(x1-x0)/len,uy=(y1-y0)/len,nx=-uy,ny=ux,o=[];
+  for(let s=0;s<=len+.01;s+=sp/10){const c=Math.cos(TAU*(s+sp/2)/sp),off=side*(sp*.12-sp*.22*c)+(R()-.5)*.7;o.push([x0+ux*s+nx*off,y0+uy*s+ny*off]);}
+  return '<path d="'+poly(o)+'"/>';
+}
+function gPerfPattern(p,C,seed){
+  const cols=8,rows=2,cw=200,ch=240,W=cols*cw,H=rows*ch,sp=p.space,rn=p.notch,R=rng(seed+7),gone=new Set();
+  while(gone.size<3)gone.add(Math.floor(R()*cols*rows));
+  const g=(i,j)=>gone.has(j*cols+i);
+  let lines="",dots="";
+  const dotted=(x0,y0,x1,y1)=>{dots+='<line x1="'+f1(x0)+'" y1="'+f1(y0)+'" x2="'+f1(x1)+'" y2="'+f1(y1)+'"/>';};
+  for(let j=0;j<rows;j++)for(let i=1;i<cols;i++){
+    const a=g(i-1,j),b=g(i,j),x=i*cw,ya=j*ch+(j===0?rn:0)+sp/2,yb=(j+1)*ch-(j===rows-1?rn:0);
+    if(!a&&!b)dotted(x,ya,x,yb);else if(!a&&b)lines+=serr(x,j*ch,x,(j+1)*ch,1,sp,R);else if(a&&!b)lines+=serr(x,j*ch,x,(j+1)*ch,-1,sp,R);
+  }
+  for(let i=0;i<cols;i++)for(let j=1;j<rows;j++){
+    const a=g(i,j-1),b=g(i,j),y=j*ch,xa=i*cw+(i===0?rn:0)+sp/2,xb=(i+1)*cw-(i===cols-1?rn:0);
+    if(!a&&!b)dotted(xa,y,xb,y);else if(!a&&b)lines+=serr(i*cw,y,(i+1)*cw,y,-1,sp,R);else if(a&&!b)lines+=serr(i*cw,y,(i+1)*cw,y,1,sp,R);
+  }
+  const side=(P)=>{lines+='<path d="'+poly(P)+'"/>';};
+  for(let i=0;i<cols;i++){
+    if(!g(i,0))side([].concat(i>0?arc(i*cw,0,rn,Math.PI/2,0,6):[[0,0]],i<cols-1?arc((i+1)*cw,0,rn,Math.PI,Math.PI/2,6):[[W,0]]));
+    if(!g(i,rows-1))side([].concat(i>0?arc(i*cw,H,rn,-Math.PI/2,0,6):[[0,H]],i<cols-1?arc((i+1)*cw,H,rn,-Math.PI,-Math.PI/2,6):[[W,H]]));
+  }
+  for(let j=0;j<rows;j++){
+    if(!g(0,j))side([].concat(j>0?arc(0,j*ch,rn,0,Math.PI/2,6):[[0,0]],j<rows-1?arc(0,(j+1)*ch,rn,-Math.PI/2,0,6):[[0,H]]));
+    if(!g(cols-1,j))side([].concat(j>0?arc(W,j*ch,rn,Math.PI,Math.PI/2,6):[[W,0]],j<rows-1?arc(W,(j+1)*ch,rn,-Math.PI/2,-Math.PI,6):[[W,H]]));
+  }
+  return wrap(W+40,H+40,'<g transform="translate(20 20)"><g fill="none" stroke="'+C+'" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">'+lines+'</g><g stroke="'+C+'" stroke-width="'+f1(sp*.5)+'" stroke-linecap="round" stroke-dasharray="0 '+f1(sp)+'">'+dots+"</g></g>");
+}
+
+/* ---------- 4. 눕는 줄기 ---------- */
+function gStrands(p,C,seed,W,H,n,bendAt){
+  const R=rng(seed);let o="";
+  for(let k=0;k<n;k++){
+    const x=24+(W-48)*(k+.5)/n+(R()-.5)*(W-48)/n*.8,Lh=(H-40)*(.45+.55*R())*p.len,b=Math.max(-1.3,Math.min(1.3,bendAt(x))),y0=H-16;
+    o+='<path d="M'+f1(x)+" "+y0+"Q"+f1(x+Math.sin(b*.35)*Lh*.5)+" "+f1(y0-Math.cos(b*.35)*Lh*.5)+" "+f1(x+Math.sin(b)*Lh*.95)+" "+f1(y0-Math.cos(b)*Lh*.92)+'"/>';
+  }
+  return '<g fill="none" stroke="'+C+'" stroke-width="1" stroke-linecap="round">'+o+"</g>";
+}
+function gStrandsModule(bend,p,C,seed){const ph=rng(seed+3)()*TAU;return wrap(240,240,'<g transform="translate('+f1(-bend*34)+' 0)">'+gStrands(p,C,seed,240,240,p.count,x=>bend*(1+p.wave*Math.sin(x*.045+ph)))+"</g>");}
+function gStrandsPattern(p,C,seed){
+  const R=rng(seed+11),gs=[0,1,2].map(()=>({c:R()*1600,a:.5+R()*.7,w:120+R()*120}));
+  return wrap(1600,480,gStrands(p,C,seed+5,1600,480,p.count*6,x=>.12+gs.reduce((s,g)=>s+g.a*Math.exp(-Math.pow((x-g.c)/g.w,2)),0)*(.6+p.bend*.6)));
+}
+
+/* ---------- motif table ---------- */
+let SEED=Math.floor(Math.random()*1e6);
+const MOTIFS=[
+  {id:"edge",name:"풀리는 가장자리",
+    obs:"관찰 — 물에 녹는 종이 테스트 영상. 물에 닿은 쪽부터 하얗게 불투명해지고, 가장자리가 찢긴 듯 솜처럼 풀려 가라앉는다.",
+    params:[{key:"t",label:"풀린 정도",min:0,max:1,step:.01,value:.55},{key:"rough",label:"거칠기",min:0,max:1,step:.01,value:.5},{key:"fluff",label:"솜 입자",min:0,max:1,step:.01,value:.6}],
+    base:(p,C,s)=>wrap(200,240,gEdge(p.t,p,C,s)),
+    vars:[0,.12,.25,.38,.5,.63,.76,.9].map(v=>({v,cap:Math.round(v*100)+"%"})),
+    vari:(v,p,C,s)=>wrap(200,240,gEdge(v,p,C,s)),
+    varCap:"풀린 정도 0 → 90%",
+    pattern:(p,C,s)=>gEdgePattern(p,C,s),patCap:"단계별 모듈을 위아래로 엇갈려 쌓은 패턴"},
+  {id:"rings",name:"겹치는 동심원",
+    obs:"관찰 — 물에 떨어진 자리에서 퍼지는 파동. 두 곳에서 퍼진 파동이 만나면 서로 겹치며 칸이 생긴다. 키워드 ‘가벼운 공명’.",
+    params:[{key:"k",label:"선 → 면",min:0,max:1,step:.01,value:.55},{key:"gap",label:"원 간격",min:6,max:18,step:.5,value:10},{key:"dist",label:"중심 거리",min:0,max:140,step:1,value:56},{key:"count",label:"원 개수",min:4,max:16,step:1,value:10}],
+    base:(p,C)=>gRingsModule(p.k,p,C),
+    vars:[0,.13,.26,.39,.5,.65,.8,.95].map(v=>({v})),
+    capOf:(v,p)=>{const st=ringStyle(v,p.gap);return st.mode==="line"?"선 "+st.w.toFixed(1):"면 "+Math.round(st.w/p.gap*100)+"%";},
+    vari:(v,p,C)=>gRingsModule(v,p,C),
+    varCap:"얇은 선 → 면",
+    pattern:(p,C)=>gRingsPattern(p,C),patCap:"중심 여덟 개를 지그재그로 놓은 간섭 패턴"},
+  {id:"perf",name:"점선과 반원 홈",
+    obs:"관찰 — 매장 웰컴 카드의 절취선. 종이 끝 반원 홈에서 곧은 점선이 이어지고, 뜯으면 구멍 자리마다 오톨도톨한 톱니가 양쪽에 남는다.",
+    params:[{key:"tau",label:"뜯긴 정도",min:0,max:1,step:.01,value:.55},{key:"space",label:"점 간격",min:5,max:14,step:.5,value:8},{key:"notch",label:"홈 크기",min:3,max:16,step:.5,value:8}],
+    base:(p,C,s)=>wrap(240,240,gPerf(p.tau,p,C,s)),
+    vars:[0,.15,.3,.45,.6,.75,.9,1].map(v=>({v,cap:Math.round(v*100)+"%"})),
+    vari:(v,p,C,s)=>wrap(240,240,gPerf(v,p,C,s)),
+    varCap:"뜯긴 정도 0 → 100%",
+    pattern:(p,C,s)=>gPerfPattern(p,C,s),patCap:"한 장의 시트에서 몇 칸을 뜯어낸 패턴"},
+  {id:"strands",name:"눕는 줄기",
+    obs:"관찰 — 바람에 눕는 들판과 긴 노출로 찍은 물결. 화가 날 때 ‘휴~’ 내쉬는 숨이 지나가면 얇은 선들이 한 방향으로 눕는다.",
+    params:[{key:"bend",label:"바람",min:0,max:1.2,step:.01,value:.55},{key:"count",label:"줄기 수",min:12,max:80,step:1,value:36},{key:"len",label:"길이",min:.4,max:1,step:.01,value:.8},{key:"wave",label:"물결",min:0,max:1,step:.01,value:.4}],
+    base:(p,C,s)=>gStrandsModule(p.bend,p,C,s),
+    vars:[0,.12,.25,.4,.55,.7,.85,1.05].map(v=>({v,cap:"바람 "+Math.round(v/1.05*100)+"%"})),
+    vari:(v,p,C,s)=>gStrandsModule(v,p,C,s),
+    varCap:"바람 0 → 100%",
+    pattern:(p,C,s)=>gStrandsPattern(p,C,s),patCap:"세 번의 숨이 지나가는 들판 패턴"}
+];
+MOTIFS.forEach((m,i)=>{m.p={};m.params.forEach(q=>m.p[q.key]=q.value);m.sel="base";m.idx=i;});
+const seedOf=m=>SEED+m.idx*101;
+
+/* ---------- hand-drawn bits ---------- */
+function scribbleD(){
+  const N=30,a0=rand(-2.6,-1.9),span=TAU+rand(.3,.55);let d="";
+  for(let i=0;i<=N;i++){const t=i/N,a=a0+span*t,k=1+Math.sin(t*8+a0)*.035+t*.05;d+=(i?" L":"M")+(50+Math.cos(a)*47*k).toFixed(1)+" "+(20+Math.sin(a)*17*k*(1+.1*t)).toFixed(1);}
+  return d;
+}
+const scr=()=>'<svg class="scr" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="'+scribbleD()+'"/></svg>';
+function glyphD(){const y=8,a=rand(4,7),b=rand(4,7);return "M2 "+(y+rand(-1,1)).toFixed(1)+" C"+rand(5,8).toFixed(1)+" "+(y-a).toFixed(1)+" "+rand(9,13).toFixed(1)+" "+(y+b).toFixed(1)+" 15 "+y+" S"+rand(21,24).toFixed(1)+" "+(y-a*.8).toFixed(1)+" 28 "+(y+rand(-1,2)).toFixed(1);}
+function lineD(){let d="M1 "+(11+rand(-.6,.6)).toFixed(1);for(let x=15;x<=120;x+=15){const y=11+rand(-.9,.9)-(x>90?(x-90)*.07:0);d+=" Q"+(x-7.5)+" "+(11+rand(-1.2,1.2)).toFixed(1)+" "+x+" "+y.toFixed(1);}return d;}
+const KNOB="M-4 11 C-4.5 4.5 5 4.5 4.2 10 C3.6 14 -1.8 14.2 -2.8 11.4";
+const knobX=(v,k)=>(6+(v-k.min)/(k.max-k.min)*108).toFixed(1);
+
+/* ---------- build ---------- */
+$("nav").innerHTML=MOTIFS.map(m=>'<button class="w" type="button" data-go="'+m.id+'">'+m.name+scr()+"</button>").join("");
+$("nav").addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b)document.getElementById("m-"+b.dataset.go).scrollIntoView({behavior:REDUCED?"auto":"smooth",block:"start"});});
+document.querySelectorAll(".right .w,#codebox-close").forEach(b=>b.insertAdjacentHTML("beforeend",scr()));
+
+const main=$("main");
+MOTIFS.forEach(m=>{
+  const sec=document.createElement("section");sec.className="mt";sec.id="m-"+m.id;
+  sec.innerHTML=
+    '<div class="mt-head"><h2>'+m.name+'</h2><p class="obs">'+m.obs+"</p></div>"+
+    '<div class="row"><div class="base-box"><p class="step">기본 도형</p><button class="cell" type="button" data-cell="base" aria-pressed="true" aria-label="'+m.name+' 기본 도형"></button>'+
+    '<div class="ctrls">'+m.params.map(k=>{const id=m.id+"-"+k.key;return '<label class="sl" for="'+id+'"><svg class="gl" viewBox="0 0 30 16" aria-hidden="true"><path d="'+glyphD()+'"/></svg><span class="tr"><svg viewBox="0 0 120 22" aria-hidden="true"><path class="ln" d="'+lineD()+'"/><path class="kn" d="'+KNOB+'" transform="translate('+knobX(k.value,k)+' 0)"/></svg><input type="range" id="'+id+'" data-key="'+k.key+'" min="'+k.min+'" max="'+k.max+'" step="'+k.step+'" value="'+k.value+'"></span><span class="lb">'+k.label+"</span></label>";}).join("")+"</div></div>"+
+    '<div><p class="step">변형 · '+m.varCap+'</p><div class="vars">'+m.vars.map((v,i)=>'<button class="cell" type="button" data-cell="v'+i+'" aria-pressed="false"></button>').join("")+"</div></div></div>"+
+    '<div><p class="step">패턴 · '+m.patCap+'</p><button class="cell" type="button" data-cell="pattern" aria-pressed="false" aria-label="'+m.name+' 패턴"></button></div>'+
+    '<div class="act"><span>고른 그래픽 <span class="sel" data-sel></span></span><button class="w" type="button" data-copy>SVG 복사'+scr()+'</button><button class="w dl" type="button" data-save>SVG 받기'+scr()+"</button></div>";
+  main.appendChild(sec);m.sec=sec;
+  sec.addEventListener("input",e=>{
+    const t=e.target;if(!t.matches('input[type="range"]'))return;
+    const k=m.params.find(q=>q.key===t.dataset.key);m.p[k.key]=parseFloat(t.value);
+    t.parentElement.querySelector(".kn").setAttribute("transform","translate("+knobX(m.p[k.key],k)+" 0)");
+    render(m);
+  });
+  sec.addEventListener("click",e=>{
+    const c=e.target.closest("[data-cell]");
+    if(c){m.sel=c.dataset.cell;sec.querySelectorAll("[data-cell]").forEach(x=>x.setAttribute("aria-pressed",String(x===c)));selLabel(m);return;}
+    if(e.target.closest("[data-copy]"))copySvg(m);
+    else if(e.target.closest("[data-save]"))saveSvg(m);
+  });
+});
+function svgOf(m,which){
+  const C=ink(),s=seedOf(m);
+  if(which==="base")return m.base(m.p,C,s);
+  if(which==="pattern")return m.pattern(m.p,C,s);
+  const v=m.vars[+which.slice(1)];return m.vari(v.v,m.p,C,s);
+}
+function capOf(m,i){const v=m.vars[i];return m.capOf?m.capOf(v.v,m.p):v.cap;}
+function selLabel(m){
+  const s=m.sel,t=s==="base"?"기본 도형":s==="pattern"?"패턴":"변형 "+(+s.slice(1)+1)+" ("+capOf(m,+s.slice(1))+")";
+  m.sec.querySelector("[data-sel]").textContent="— "+t;
+}
+function render(m){
+  m.sec.querySelector('[data-cell="base"]').innerHTML=svgOf(m,"base");
+  m.vars.forEach((v,i)=>{m.sec.querySelector('[data-cell="v'+i+'"]').innerHTML=svgOf(m,"v"+i)+'<span class="cap">'+capOf(m,i)+"</span>";});
+  m.sec.querySelector('[data-cell="pattern"]').innerHTML=svgOf(m,"pattern");
+  selLabel(m);
+}
+function renderAll(){MOTIFS.forEach(render);}
+
+/* ---------- copy / save ---------- */
+let toastT=0;
+function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),2200);}
+function fileName(m){return "tea-paper-"+m.id+"-"+(m.sel==="base"?"base":m.sel==="pattern"?"pattern":"var"+(+m.sel.slice(1)+1))+(TONE==="dark"?"-white":"-black")+".svg";}
+function copySvg(m){
+  const svg=svgOf(m,m.sel);
+  const fallback=()=>{$("codebox-text").value=svg;$("codebox").hidden=false;$("codebox-text").focus();$("codebox-text").select();};
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(svg).then(()=>toast(TONE==="dark"?"복사했어요 — 흰 선이라 흰 바탕에선 안 보일 수 있어요":"복사했어요 — 피그마에 붙여 넣으세요"),fallback);
+    }else fallback();
+  }catch(_){fallback();}
+}
+$("codebox-close").addEventListener("click",()=>{$("codebox").hidden=true;});
+const IN_ARTIFACT=typeof window.claude!=="undefined"&&window.claude&&typeof window.claude.use==="function";
+let DL=null;
+if(IN_ARTIFACT){window.claude.use("downloads").then(d=>{DL=d;document.body.classList.toggle("can-dl",!!d);}).catch(()=>{});}
+else document.body.classList.add("can-dl");
+async function saveSvg(m){
+  const svg=svgOf(m,m.sel),name=fileName(m);
+  if(DL){
+    try{await DL.save({filename:name,data:svg});toast("받았어요");}
+    catch(e){const c=e&&e.code;if(c==="declined")return;if(c==="rate_limited"){toast("잠시 뒤에 다시 눌러 주세요");return;}document.body.classList.remove("can-dl");toast("여기서는 받을 수 없어요. ‘SVG 복사’를 써 주세요");}
+  }else if(!IN_ARTIFACT){
+    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([svg],{type:"image/svg+xml"}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+  }
+}
+
+/* ---------- tone / reseed ---------- */
+function setTone(t){
+  TONE=t;document.body.classList.toggle("light",t==="light");
+  document.querySelectorAll("[data-tone]").forEach(b=>b.setAttribute("aria-checked",String(b.dataset.tone===t)));
+  renderAll();
+}
+document.querySelectorAll("[data-tone]").forEach(b=>b.addEventListener("click",()=>setTone(b.dataset.tone)));
+$("reseed").addEventListener("click",()=>{SEED=Math.floor(Math.random()*1e6);renderAll();toast("새로 섞었어요");});
+renderAll();
+
+/* ---------- 반투명 원 커서 ---------- */
+if(window.matchMedia&&window.matchMedia("(hover:hover) and (pointer:fine)").matches){
+  const cu=$("cursor");document.documentElement.classList.add("cursor-on");
+  document.addEventListener("pointermove",e=>{
+    if(e.pointerType!=="mouse")return;
+    cu.style.transform="translate("+e.clientX+"px,"+e.clientY+"px)";cu.classList.add("on");
+    const t=e.target;cu.classList.toggle("hot",!!(t&&t.closest&&t.closest("button,label,input,textarea")));
+  });
+  document.addEventListener("pointerdown",e=>{
+    if(e.pointerType!=="mouse")return;cu.classList.add("down");
+    if(!REDUCED){const r=document.createElement("div");r.className="ripple";r.style.left=e.clientX+"px";r.style.top=e.clientY+"px";document.body.appendChild(r);setTimeout(()=>r.remove(),500);}
+  });
+  document.addEventListener("pointerup",()=>cu.classList.remove("down"));
+  document.documentElement.addEventListener("mouseleave",()=>cu.classList.remove("on"));
+}
+})();
+</script>
+</body></html>
